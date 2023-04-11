@@ -134,12 +134,12 @@ for epoch in range(max_epoch):
         G = Variable(G_buffer)
         H = Variable(L_buffer)
 
-        KLloss_ll = eta * multilabelsimilarityloss(sample_L, seen_L, cur_l, H)
-        KLloss_lx = multilabelsimilarityloss(sample_L, seen_L, cur_l, F)
-        KLloss_ly = gamma * multilabelsimilarityloss(sample_L, seen_L, cur_l, G)
+        loss_ll = eta * multilabelsimilarityloss(sample_L, seen_L, cur_l, H)
+        loss_lx = multilabelsimilarityloss(sample_L, seen_L, cur_l, F)
+        loss_ly = gamma * multilabelsimilarityloss(sample_L, seen_L, cur_l, G)
         quantization_l = (mu * quantizationLoss(cur_l, Bx[ind, :]) + mu * quantizationLoss(cur_l, By[ind, :])) / 2
 
-        loss_l = KLloss_ll + KLloss_lx + KLloss_ly + quantization_l
+        loss_l = loss_ll + loss_lx + loss_ly + quantization_l
 
         optimizer_label.zero_grad()
         loss_l.backward()
@@ -166,11 +166,11 @@ for epoch in range(max_epoch):
         F = Variable(F_buffer)
         H = Variable(L_buffer)
 
-        KLloss_xx = eta * multilabelsimilarityloss(sample_L, seen_L, cur_f, F)
-        KLloss_xl = multilabelsimilarityloss(sample_L, seen_L, cur_f, H)
+        loss_xx = eta * multilabelsimilarityloss(sample_L, seen_L, cur_f, F)
+        loss_xl = multilabelsimilarityloss(sample_L, seen_L, cur_f, H)
         quantization_x1 = mu * quantizationLoss(cur_f, Bx[ind, :])
 
-        loss_x1 = KLloss_xx + KLloss_xl + quantization_x1
+        loss_x1 = loss_xx + loss_xl + quantization_x1
 
         optimizer_img1.zero_grad()
         loss_x1.backward()
@@ -195,11 +195,11 @@ for epoch in range(max_epoch):
         H = Variable(L_buffer)
         G = Variable(G_buffer)
 
-        KLloss_yy = eta * multilabelsimilarityloss(sample_L, seen_L, cur_g, G)
-        KLloss_yl = multilabelsimilarityloss(sample_L, seen_L, cur_g, H)
+        loss_yy = eta * multilabelsimilarityloss(sample_L, seen_L, cur_g, G)
+        loss_yl = multilabelsimilarityloss(sample_L, seen_L, cur_g, H)
         quantization_y1 = mu * quantizationLoss(cur_g, By[ind, :])
 
-        loss_y1 = KLloss_yy + KLloss_yl + quantization_y1
+        loss_y1 = loss_yy + loss_yl + quantization_y1
 
         optimizer_txt1.zero_grad()
         loss_y1.backward()
