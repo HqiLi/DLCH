@@ -14,6 +14,6 @@ def multilabelsimilarityloss(labels_batchsize, labels_train, hashrepresentations
     labelsSimilarity = torch.matmul(labels_batchsize, labels_train.t())  # [0,1]
     hashrepresentationsSimilarity = torch.relu(
         torch.matmul(hashrepresentations_batchsize, hashrepresentations__train.t()))  # [0,1]
-    MSEloss = torch.sum(torch.pow(hashrepresentationsSimilarity - labelsSimilarity, 2)) / (num_train * batch_size)
+    loss = torch.sum(torch.pow(hashrepresentationsSimilarity - labelsSimilarity, 2)) / (num_train * batch_size)
 
-    return MSEloss
+    return loss
